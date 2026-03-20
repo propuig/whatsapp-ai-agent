@@ -6,11 +6,11 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 
-const { EVOLUTION_API_URL, EVOLUTION_API_KEY, INSTANCE_NAME, GEMINI_API_KEY } = process.env;
+const { EVOLUTION_API_URL, EVOLUTION_API_KEY, INSTANCE_NAME, GEMINI_API_KEY, SYSTEM_PROMPT } = process.env;
 
 // Initialize Gemini AI via the official Google SDK
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-const aiModel = genAI.getGenerativeModel({ model: 'gemini-pro' });
+const aiModel = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
 
 // Incoming Messages from Evolution API Webhook
 app.post('/webhook', async (req, res) => {
@@ -32,8 +32,11 @@ app.post('/webhook', async (req, res) => {
         console.log('Received message from', remoteJid, ':', text);
         
         try {
+            // Pull personality from environment variables, or use the default
+            const personality = SYSTEM_PROMPT || 'You are a friendly, helpful, and concise conversational WhatsApp assistant.';
+            
             // Generate a natural language response using Gemini 1.5 Flash
-            const prompt = `Context: You are a friendly, helpful, and concise conversational WhatsApp assistant.\n\nUser message: ${text}\n\nPlease write a conversational reply:`;
+            const prompt = `System Instructions: ${personality}\n\nUser message: ${text}\n\nPlease write a conversational reply matching your exact instructions:`;
             const result = await aiModel.generateContent(prompt);
             const aiResponse = result.response.text();
 
