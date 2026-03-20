@@ -13,6 +13,7 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const aiModel = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-3.0-flash-preview' });
 
 // Incoming Messages from Evolution API Webhook
+app.get('/', (req, res) => res.sendStatus(200));
 app.post('/webhook', async (req, res) => {
     // Immediately return 200 OK to Evolution API to prevent timeout polling
     res.sendStatus(200);
