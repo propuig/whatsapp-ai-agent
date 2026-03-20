@@ -10,7 +10,7 @@ const { EVOLUTION_API_URL, EVOLUTION_API_KEY, INSTANCE_NAME, GEMINI_API_KEY, SYS
 
 // Initialize Gemini AI via the official Google SDK
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-const aiModel = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+const aiModel = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-3.0-flash-preview' });
 
 // Incoming Messages from Evolution API Webhook
 app.post('/webhook', async (req, res) => {
