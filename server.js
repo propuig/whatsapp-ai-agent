@@ -65,4 +65,4 @@ app.post('/webhook', async (req, res) => {
 
 // Start listening for webhooks
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Evolution API Webhook actively listening on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log('Evolution API Webhook actively listening on port', PORT));
